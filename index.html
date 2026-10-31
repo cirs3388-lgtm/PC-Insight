@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Pedia - Ensiklopedia & Simulator Komponen Komputer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome untuk ikon komponen -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-indigo-500 selection:text-white min-h-screen flex flex-col justify-between transition-colors duration-300" id="bodyRoot">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-slate-950/80 dark:bg-slate-950/80 bg-white/80 border-b border-slate-800 dark:border-slate-800 border-slate-200 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="resetView()">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-microchip text-white text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-500 via-indigo-600 to-violet-600 dark:from-white dark:via-indigo-200 dark:to-indigo-400 bg-clip-text text-transparent">PC Pedia</span>
+                    <span class="block text-xs text-slate-500 dark:text-slate-400 font-medium">Ensiklopedia & Simulator PC</span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                <a href="#komponen" onclick="resetView()" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white transition">Komponen</a>
+                <a href="#simulator" onclick="resetView()" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white transition">Simulator Rakit PC</a>
+                <a href="#kuis" onclick="resetView()" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white transition">Kuis Interaktif</a>
+                <a href="#tentang" onclick="resetView()" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white transition">Tentang Kami</a>
+            </nav>
+            <div class="flex items-center space-x-3">
+                <!-- Search Input Desktop -->
+                <div class="hidden sm:block relative w-44 md:w-56">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-search text-xs"></i>
+                    </span>
+                    <input type="text" id="searchInput" oninput="filterComponents()" placeholder="Cari komponen..." class="w-full pl-9 pr-4 py-2 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-full text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <!-- Dark / Light Mode Toggle Button -->
+                <button onclick="toggleDarkMode()" id="darkModeBtn" aria-label="Toggle Theme" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-sun text-sm" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+
+        <!-- Hero Section -->
+        <section id="hero" class="text-center py-12 md:py-16 mb-8 relative overflow-hidden rounded-3xl bg-gradient-to-b from-indigo-50 dark:from-indigo-950/30 via-slate-100/50 dark:via-slate-900/50 to-slate-200/20 dark:to-slate-900/20 border border-slate-200 dark:border-slate-800/80 px-6 transition-colors duration-300">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-indigo-500/10 dark:from-indigo-600/10 via-transparent to-transparent pointer-events-none"></div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-4">
+                Kenali Setiap Bagian <span class="bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">Komputer Anda</span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-sm sm:text-base text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+                Jelajahi komponen hardware dengan gambar fisik nyata, simulasi rakit PC berdasarkan budget, dan uji pemahaman Anda melalui 10 soal kuis interaktif.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#komponen" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl shadow-lg shadow-indigo-600/30 transition transform hover:-translate-y-0.5">
+                    Mulai Eksplorasi <i class="fa-solid fa-arrow-down ml-2 text-xs"></i>
+                </a>
+                <a href="#simulator" class="px-6 py-3 bg-slate-200 dark:bg-slate-900 hover:bg-slate-300 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 text-sm font-semibold rounded-xl border border-slate-300 dark:border-slate-800 transition">
+                    Simulator Rakit PC <i class="fa-solid fa-laptop-code ml-2 text-xs"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- Components Grid Section -->
+        <section id="komponen" class="mb-16">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-cubes text-indigo-500 dark:text-indigo-400 text-lg"></i> Daftar Komponen Utama
+                </h2>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <div class="sm:hidden relative w-full">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                            <i class="fa-solid fa-search text-xs"></i>
+                        </span>
+                        <input type="text" id="searchInputMobile" oninput="filterComponentsMobile()" placeholder="Cari komponen..." class="w-full pl-9 pr-4 py-2 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-full text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <span id="componentCount" class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-900 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-800 whitespace-nowrap">8 Komponen</span>
+                </div>
+            </div>
+
+            <!-- Grid Cards -->
+            <div id="gridContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Dinamis via JS -->
+            </div>
+            
+            <!-- Empty Search State -->
+            <div id="emptyState" class="hidden text-center py-16">
+                <div class="w-16 h-16 bg-slate-100 dark:bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400 text-xl border border-slate-300 dark:border-slate-800">
+                    <i class="fa-solid fa-search"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-1">Komponen tidak ditemukan</h3>
+                <p class="text-sm text-slate-500">Coba kata kunci pencarian yang lain.</p>
+            </div>
+        </section>
+
+        <!-- Detail View Section (Interactive Container) -->
+        <div id="detailSection" class="hidden transition-all duration-500 transform opacity-0 translate-y-4 mb-16">
+            <div class="bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden transition-colors duration-300">
+                <!-- Back Button -->
+                <button onclick="resetView()" class="absolute top-6 right-6 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-medium rounded-xl transition flex items-center gap-2 border border-slate-300 dark:border-slate-700">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+                </button>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-8 lg:mt-0">
+                    <!-- Kolom Gambar Fisik Nyata -->
+                    <div class="lg:col-span-5 flex flex-col items-center">
+                        <div class="relative w-full h-64 sm:h-72 rounded-2xl bg-indigo-50 dark:bg-slate-900 border border-indigo-100 dark:border-slate-800/80 flex items-center justify-center shadow-inner overflow-hidden group cursor-pointer" onclick="openLightbox()">
+                            <img id="detailPhysicalImage" src="" alt="Gambar Fisik Komponen" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-semibold gap-2">
+                                <i class="fa-solid fa-magnifying-glass-plus text-lg"></i> Klik untuk Perbesar
+                            </div>
+                        </div>
+                        <span class="block text-[11px] text-slate-400 mt-2 italic"><i class="fa-solid fa-info-circle mr-1"></i> Klik gambar untuk melihat ukuran penuh</span>
+                    </div>
+
+                    <!-- Kolom Penjelasan -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div>
+                            <span id="detailBadge" class="px-3 py-1 bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-xs font-semibold rounded-full border border-indigo-200 dark:border-indigo-500/30">Hardware Utama</span>
+                            <h2 id="detailTitle" class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-2">Nama Komponen</h2>
+                        </div>
+
+                        <!-- Fungsi Utama Box -->
+                        <div class="bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/40 rounded-2xl p-4">
+                            <h4 class="text-xs font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-wide mb-1 flex items-center gap-2">
+                                <i class="fa-solid fa-bolt text-indigo-500 dark:text-indigo-400"></i> Fungsi Utama
+                            </h4>
+                            <p id="detailFunction" class="text-sm text-slate-700 dark:text-indigo-100 font-medium">Fungsi utama komponen...</p>
+                        </div>
+
+                        <!-- Deskripsi Lengkap -->
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">Penjelasan Mendalam</h4>
+                            <p id="detailDescription" class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Deskripsi lengkap komponen...</p>
+                        </div>
+
+                        <!-- Spesifikasi / Karakteristik -->
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">Karakteristik & Spesifikasi</h4>
+                            <ul id="detailSpecs" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700 dark:text-slate-300">
+                                <!-- List item dinamis -->
+                            </ul>
+                        </div>
+
+                        <!-- Tips Membeli & Gejala Kerusakan -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div class="bg-slate-50 dark:bg-slate-900/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-lightbulb"></i> Tips Membeli
+                                </h4>
+                                <p id="detailTips" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">Tips membeli...</p>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-slate-900/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> Gejala Kerusakan
+                                </h4>
+                                <p id="detailTrouble" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">Gejala kerusakan...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lightbox Modal untuk Zoom Gambar -->
+        <div id="lightboxModal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+            <div class="relative max-w-4xl w-full max-h-[90vh] flex flex-col items-center">
+                <button onclick="closeLightbox()" class="absolute -top-12 right-0 w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center text-lg transition border border-slate-700 shadow-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <img id="lightboxImage" src="" alt="Zoomed Component" class="max-w-full max-h-[80vh] object-contain rounded-2xl border border-slate-800 shadow-2xl">
+                <p id="lightboxCaption" class="text-sm font-semibold text-slate-200 mt-4 text-center"></p>
+            </div>
+        </div>
+
+        <!-- Simulator Rakit PC Section -->
+        <section id="simulator" class="mb-16 pt-6">
+            <div class="text-center mb-10">
+                <span class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase">Fitur Interaktif</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Simulator & Panduan Rakit PC</h2>
+                <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 max-w-xl mx-auto">
+                    Pilih kategori kebutuhan dan budget untuk melihat rekomendasi spesifikasi komponen PC yang ideal.
+                </p>
+            </div>
+
+            <!-- Tab Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 mb-8">
+                <button onclick="setBuildTier('entry')" id="btnTierEntry" class="px-5 py-2.5 rounded-xl text-xs font-semibold transition border border-indigo-600 bg-indigo-600 text-white shadow-md shadow-indigo-500/20">
+                    <i class="fa-solid fa-graduation-cap mr-2"></i> Entry-Level (Kantor & Kuliah)
+                </button>
+                <button onclick="setBuildTier('mid')" id="btnTierMid" class="px-5 py-2.5 rounded-xl text-xs font-semibold transition border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:border-indigo-500">
+                    <i class="fa-solid fa-gamepad mr-2"></i> Mid-Range (Gaming 1080p)
+                </button>
+                <button onclick="setBuildTier('highend')" id="btnTierHighend" class="px-5 py-2.5 rounded-xl text-xs font-semibold transition border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:border-indigo-500">
+                    <i class="fa-solid fa-fire mr-2"></i> High-End (Gaming & Video Editing 4K)
+                </button>
+            </div>
+
+            <!-- Build Details Card -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl transition-colors duration-300">
+                <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 mb-6 border-b border-slate-200 dark:border-slate-800 gap-4">
+                    <div>
+                        <span id="buildBadge" class="px-3 py-1 bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-[11px] font-semibold rounded-full">Rekomendasi Pemula</span>
+                        <h3 id="buildTitle" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-2">PC Office & Multimedia Hemat</h3>
+                        <p id="buildDesc" class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">Cocok untuk tugas harian, kuliah, browsing lancar, dan aplikasi perkantoran.</p>
+                    </div>
+                    <div class="bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-900/50 p-4 rounded-2xl text-right">
+                        <span class="block text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold uppercase tracking-wider">Estimasi Total Biaya</span>
+                        <span id="buildPrice" class="text-lg sm:text-2xl font-extrabold text-indigo-700 dark:text-indigo-300">Rp 4.500.000 - Rp 6.000.000</span>
+                    </div>
+                </div>
+
+                <!-- Specs Breakdown Table/Grid -->
+                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-4">Rincian Komponen Rekomendasi</h4>
+                <div id="buildComponentsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Dinamis via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Kuis Interaktif Section -->
+        <section id="kuis" class="mb-16 pt-6">
+            <div class="text-center mb-10">
+                <span class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase">Uji Pemahaman</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Kuis Interaktif Hardware (10 Soal)</h2>
+                <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 max-w-xl mx-auto">
+                    Uji seberapa jauh Anda mengenal fungsi komponen komputer melalui 10 pertanyaan seru ini!
+                </p>
+            </div>
+
+            <div class="max-w-2xl mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl transition-colors duration-300">
+                <!-- Quiz Wrapper -->
+                <div id="quizContainer">
+                    <div class="flex items-center justify-between mb-4 text-xs font-medium text-slate-500 dark:text-slate-400">
+                        <span id="quizProgress">Pertanyaan 1 dari 10</span>
+                        <span id="quizScoreTracker" class="text-indigo-600 dark:text-indigo-400 font-semibold">Skor: 0</span>
+                    </div>
+                    <h3 id="quizQuestion" class="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-6">Pertanyaan kuis akan dimuat...</h3>
+                    
+                    <div id="quizOptions" class="space-y-3 mb-6">
+                        <!-- Opsi jawaban dinamis -->
+                    </div>
+
+                    <div id="quizFeedback" class="hidden p-4 rounded-xl mb-6 text-xs sm:text-sm font-medium">
+                        <!-- Feedback benar/salah -->
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button id="quizNextBtn" onclick="nextQuizQuestion()" class="hidden px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl shadow transition">
+                            Pertanyaan Selanjutnya <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quiz Results Wrapper -->
+                <div id="quizResultBox" class="hidden text-center py-8">
+                    <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-950/60 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600 dark:text-indigo-400 text-2xl border border-indigo-200 dark:border-indigo-900">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Kuis Selesai!</h3>
+                    <p id="quizFinalScoreText" class="text-sm text-slate-600 dark:text-slate-400 mb-6">Skor akhir Anda...</p>
+                    <button onclick="restartQuiz()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl shadow transition">
+                        <i class="fa-solid fa-rotate-right mr-2"></i> Ulangi Kuis
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tentang Kami Section -->
+        <section id="tentang" class="mt-20 pt-10 border-t border-slate-200 dark:border-slate-800 text-center max-w-2xl mx-auto">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Tentang PC Pedia</h3>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                PC Pedia adalah platform ensiklopedia digital interaktif dan simulator rakit PC yang dirancang untuk membantu pelajar, teknisi pemula, dan pecinta teknologi mengenali serta memahami perangkat keras komputer dengan mudah dan menyenangkan.
+            </p>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-slate-950 mt-16 py-6 text-center text-xs text-slate-500 transition-colors duration-300">
+        <p>&copy; 2026 PC Pedia. Dibuat dengan interaktif dan modern untuk edukasi hardware komputer.</p>
+    </footer>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        // Data Komponen Komputer dengan Gambar Fisik Nyata Sesuai Masing-Masing Komponen
+        const componentsData = [
+            {
+                id: 'cpu',
+                name: 'CPU (Central Processing Unit)',
+                category: 'Otak Komputer',
+                icon: 'fa-microchip',
+                image: 'PROSESOR.jpg',
+                badge: 'Processor / Otak',
+                function: 'Memproses instruksi program, menghitung data, dan mengkoordinasikan seluruh aktivitas yang terjadi di dalam sistem komputer.',
+                description: 'CPU sering disebut sebagai otak dari komputer. Komponen ini bertanggung jawab untuk mengeksekusi perintah dari perangkat lunak maupun sistem operasi. Semakin tinggi kecepatan clock (GHz) dan jumlah inti (core) CPU, maka semakin cepat komputer dalam memproses tugas-tugas berat seperti gaming, rendering, dan multitasking.',
+                specs: [
+                    'Merek Populer: Intel & AMD',
+                    'Diukur dengan satuan GHz (Clock Speed)',
+                    'Memiliki Core dan Thread',
+                    'Membutuhkan pendingin khusus'
+                ],
+                tips: 'Pilih jumlah core sesuai kebutuhan utama. Untuk gaming/editing minimal 6-8 cores agar masa pakai lebih panjang.',
+                troubleshooting: 'Komputer gagal boot atau layar hitam (No Display) akibat pin CPU bengkok atau pendingin tidak terpasang rapat.'
+            },
+            {
+                id: 'gpu',
+                name: 'GPU (Graphics Processing Unit)',
+                category: 'Pengolah Grafis',
+                icon: 'fa-gamepad',
+                image: 'GPU.webp',
+                badge: 'Visual & Rendering',
+                function: 'Memproses data grafis dan merender gambar, video, serta animasi 3D agar tampil dengan halus di layar monitor.',
+                description: 'GPU atau kartu grafis (Graphics Card) sangat krusial bagi para gamer, editor video, animator, serta perancang 3D. GPU bekerja dengan mengambil beban berat dari CPU dalam hal perhitungan visual yang kompleks, menghasilkan frame rate tinggi dan visual yang memukau.',
+                specs: [
+                    'Merek Populer: NVIDIA, AMD, Intel Arc',
+                    'Dilengkapi VRAM (Video RAM tersendiri)',
+                    'Penting untuk Gaming & Video Editing',
+                    'Konsumsi daya relatif besar'
+                ],
+                tips: 'Perhatikan kebutuhan daya (PSU) minimal yang disarankan pabrikan GPU sebelum membeli.',
+                troubleshooting: 'Artefak visual di layar atau game crash sering disebabkan oleh driver GPU korup atau suhu GPU terlalu panas.'
+            },
+            {
+                id: 'ram',
+                name: 'RAM (Random Access Memory)',
+                category: 'Memori Sementara',
+                icon: 'fa-memory',
+                image: 'RAM.webp',
+                badge: 'Kecepatan & Multitasking',
+                function: 'Menyimpan data sementara dari aplikasi atau program yang sedang aktif agar dapat diakses dengan sangat cepat oleh CPU.',
+                description: 'RAM adalah memori volatil, yang berarti datanya akan hilang saat komputer dimatikan. Kapasitas dan kecepatan RAM menentukan seberapa banyak aplikasi yang dapat Anda jalankan secara bersamaan (multitasking) tanpa mengalami lag atau penurunan performa.',
+                specs: [
+                    'Standar Saat Ini: DDR4 dan DDR5',
+                    'Kapasitas Umum: 8GB, 16GB, 32GB+',
+                    'Kecepatan diukur dalam MHz / MT/s',
+                    'Bersifat sementara (volatile)'
+                ],
+                tips: 'Gunakan konfigurasi Dual-Channel (2 keping RAM identik) untuk mendongkrak performa sistem secara signifikan.',
+                troubleshooting: 'Komputer bunyi beep beruntun atau Blue Screen of Death (BSOD) umumnya karena kontak RAM kotor atau tidak pas.'
+            },
+            {
+                id: 'motherboard',
+                name: 'Motherboard',
+                category: 'Papan Utama',
+                icon: 'fa-network-wired',
+                image: 'MOTHERBOARD.jpg',
+                badge: 'Pusat Koneksi',
+                function: 'Menghubungkan seluruh komponen hardware komputer agar dapat saling berkomunikasi dan bekerja sama secara harmonis.',
+                description: 'Motherboard adalah papan sirkuit utama tempat CPU, RAM, kartu grafis, penyimpanan, dan perangkat eksternal lainnya ditancapkan atau dihubungkan. Motherboard juga menyediakan aliran daya listrik dari PSU ke komponen-komponen kecil di atasnya.',
+                specs: [
+                    'Memiliki Socket CPU khusus',
+                    'Menyediakan Slot PCIe untuk GPU',
+                    'Chipset menentukan fitur & overclocking',
+                    'Ukuran bervariasi (ATX, Micro-ATX, dll)'
+                ],
+                tips: 'Pastikan soket motherboard kompatibel dengan generasi processor (CPU) yang ingin dibeli.',
+                troubleshooting: 'Port USB tidak berfungsi atau komputer mati mendadak bisa jadi disebabkan korsleting pada jalur sirkuit motherboard.'
+            },
+            {
+                id: 'psu',
+                name: 'Power Supply Unit (PSU)',
+                category: 'Catu Daya',
+                icon: 'fa-bolt',
+                image: 'PSU.jpg',
+                badge: 'Suplai Listrik',
+                function: 'Mengubah arus listrik AC dari stopkontak dinding menjadi arus DC dengan berbagai tegangan yang stabil untuk seluruh komponen PC.',
+                description: 'PSU adalah jantung kelistrikan komputer. Memilih PSU yang berkualitas tinggi dan memiliki sertifikasi 80+ sangat penting untuk menjaga keamanan komponen mahal lainnya dari risiko korsleting, lonjakan listrik, atau kekurangan daya.',
+                specs: [
+                    'Sertifikasi: 80+ Bronze, Gold, Platinum',
+                    'Tipe Kabel: Non-Modular, Semi, Full',
+                    'Daya bervariasi: 500W hingga 1000W+',
+                    'Faktor keamanan sistem yang utama'
+                ],
+                tips: 'Jangan pernah menggunakan PSU abal-abal/bawaan casing murah demi keselamatan komponen PC Anda.',
+                troubleshooting: 'PC mati total saat tombol power ditekan atau sering restart sendiri saat membuka aplikasi berat.'
+            },
+            {
+                id: 'storage',
+                name: 'Storage (SSD & HDD)',
+                category: 'Media Penyimpanan',
+                icon: 'fa-hard-drive',
+                image: 'STORAGE.jpg',
+                badge: 'Penyimpanan Permanen',
+                function: 'Menyimpan sistem operasi, aplikasi, game, dan seluruh file pribadi pengguna secara permanen meskipun komputer dimatikan.',
+                description: 'Saat ini terdapat dua jenis utama media penyimpanan: Hard Disk Drive (HDD) yang menggunakan piringan mekanis berkapasitas besar namun lambat, serta Solid State Drive (SSD) berbasis flash memory yang sangat cepat dan tahan guncangan.',
+                specs: [
+                    'Tipe: SSD NVMe M.2, SSD SATA, HDD',
+                    'Kecepatan SSD NVMe jauh melampaui HDD',
+                    'Kapasitas mulai 256GB hingga Terabyte',
+                    'Tempat instalasi Sistem Operasi'
+                ],
+                tips: 'Wajib gunakan SSD minimal NVMe M.2 untuk instalasi Sistem Operasi agar komputer menyala dalam hitungan detik.',
+                troubleshooting: 'Loading game sangat lambat, file corrupt, atau SSD/HDD tidak terbaca di BIOS.'
+            },
+            {
+                id: 'casing',
+                name: 'Casing PC',
+                category: 'Rumah Hardware',
+                icon: 'fa-desktop',
+                image: 'CASING PC.png',
+                badge: 'Proteksi & Estetika',
+                function: 'Melindungi seluruh komponen internal komputer dari debu, benturan fisik, serta mengatur sirkulasi udara (airflow).',
+                description: 'Selain berfungsi sebagai pelindung fisik dan tempat dudukan komponen, casing PC modern juga dirancang dengan estetika tinggi, panel kaca tempered, serta dukungan pencahayaan RGB untuk mempercantik tampilan setup meja.',
+                specs: [
+                    'Ukuran: Full Tower, Mid Tower, ITX',
+                    'Mendukung kipas dan radiator pendingin',
+                    'Dilengkapi panel I/O depan (USB & Audio)',
+                    'Material: Baja, Aluminium, Kaca Tempered'
+                ],
+                tips: 'Pilih casing dengan ventilasi depan jaring (mesh) agar aliran udara masuk lancar dan komponen tetap dingin.',
+                troubleshooting: 'Tombol power casing macet atau port USB depan tidak aktif karena kabel panel depan belum tercolok sempurna.'
+            },
+            {
+                id: 'cooling',
+                name: 'Cooling Fan & Liquid Cooler',
+                category: 'Pendingin Suhu',
+                icon: 'fa-snowflake',
+                image: 'COOLING FAN & LIQUID COOLER.webp',
+                badge: 'Pendingin & Stabilitas',
+                function: 'Menjaga suhu operasional CPU dan komponen lainnya agar tetap dingin dan terhindar dari overheat (panas berlebih).',
+                description: 'Komponen berperforma tinggi menghasilkan panas yang signifikan. Sistem pendingin terbagi menjadi dua: Air Cooler (kipas konvensional dengan heatsink) dan Liquid Cooler (pendingin cair AIO) yang lebih efisien meredam panas ekstrem.',
+                specs: [
+                    'Jenis: Air Cooler & Liquid Cooler (AIO)',
+                    'Mencegah thermal throttling pada CPU',
+                    'Ukuran kipas standar: 120mm & 140mm',
+                    'Menjaga umur panjang komponen'
+                ],
+                tips: 'Oleskan thermal paste berkualitas secara berkala (1-2 tahun sekali) untuk menjaga konduktivitas panas.',
+                troubleshooting: 'Kipas berputar sangat kencang dan berisik, atau suhu CPU langsung melonjak tinggi saat idle.'
+            }
+        ];
+
+        // Data Tier Simulator Rakit PC
+        const buildTiers = {
+            entry: {
+                badge: 'Rekomendasi Pemula',
+                title: 'PC Office & Multimedia Hemat',
+                desc: 'Cocok untuk tugas harian, kuliah, browsing lancar, dan aplikasi perkantoran.',
+                price: 'Rp 4.500.000 - Rp 6.000.000',
+                parts: [
+                    { name: 'CPU', desc: 'Intel Core i3 / AMD Ryzen 3 (Integrated Graphics)' },
+                    { name: 'Motherboard', desc: 'H610M / A520M Motherboard' },
+                    { name: 'RAM', desc: '16GB (2x8GB) DDR4 3200MHz' },
+                    { name: 'Storage', desc: '512GB NVMe M.2 SSD' },
+                    { name: 'PSU', desc: '450W 80+ Bronze Certified' },
+                    { name: 'Casing', desc: 'Standard Office/Gaming Case with Fan' }
+                ]
+            },
+            mid: {
+                badge: 'Rekomendasi Gamer & Kreator',
+                title: 'PC Gaming 1080p & Editing Mid-Range',
+                desc: 'Ideal untuk menjalankan game AAA terbaru setting high dan editing video 1080p/4K ringan.',
+                price: 'Rp 9.500.000 - Rp 14.000.000',
+                parts: [
+                    { name: 'CPU', desc: 'Intel Core i5 / AMD Ryzen 5' },
+                    { name: 'GPU', desc: 'NVIDIA RTX 4060 / RTX 5070 Ti equivalent' },
+                    { name: 'Motherboard', desc: 'B660M / B550M Chipset' },
+                    { name: 'RAM', desc: '32GB (2x16GB) DDR4 / DDR5' },
+                    { name: 'Storage', desc: '1TB NVMe M.2 Gen4 SSD' },
+                    { name: 'PSU', desc: '650W 80+ Gold Certified' }
+                ]
+            },
+            highend: {
+                badge: 'Performa Ekstrem',
+                title: 'PC High-End Gaming & 4K Workstation',
+                desc: 'Performa tanpa kompromi untuk gaming resolusi 4K, ray tracing rata kanan, dan rendering 3D berat.',
+                price: 'Rp 22.000.000 - Rp 35.000.000+',
+                parts: [
+                    { name: 'CPU', desc: 'Intel Core i7/i9 atau AMD Ryzen 7/9' },
+                    { name: 'GPU', desc: 'NVIDIA RTX 5070 Ti / RTX 4080 Super' },
+                    { name: 'Motherboard', desc: 'Z790 / X670 Enthusiast Motherboard' },
+                    { name: 'RAM', desc: '64GB (2x32GB) DDR5 High Speed' },
+                    { name: 'Storage', desc: '2TB NVMe M.2 Gen4 High Speed' },
+                    { name: 'Cooling', desc: '360mm AIO Liquid Cooler' }
+                ]
+            }
+        };
+
+        // Data Kuis Interaktif (10 Nomor Soal)
+        const quizData = [
+            {
+                question: 'Komponen apakah yang sering dijuluki sebagai "otak" dari sistem komputer?',
+                options: ['RAM', 'CPU', 'Power Supply', 'Motherboard'],
+                correct: 1,
+                explanation: 'Benar! CPU (Central Processing Unit) adalah otak komputer yang memproses seluruh instruksi program.'
+            },
+            {
+                question: 'Apa fungsi utama dari RAM (Random Access Memory) pada komputer?',
+                options: [
+                    'Menyimpan file foto dan video secara permanen',
+                    'Menyuplai aliran listrik ke komponen internal',
+                    'Menyimpan data sementara dari aplikasi yang sedang aktif',
+                    'Mendinginkan suhu processor saat bekerja'
+                ],
+                correct: 2,
+                explanation: 'Tepat sekali! RAM menyimpan data sementara agar dapat diakses dengan cepat oleh CPU saat aplikasi berjalan.'
+            },
+            {
+                question: 'Komponen mana yang paling krusial dalam merender grafis 3D dan game berat?',
+                options: ['GPU (Graphics Card)', 'Hard Disk', 'LAN Card', 'Sound Card'],
+                correct: 0,
+                explanation: 'Benar! GPU bertanggung jawab penuh memproses data visual dan grafis kompleks.'
+            },
+            {
+                question: 'Mengapa penggunaan SSD NVMe lebih disarankan daripada HDD konvensional untuk sistem operasi?',
+                options: [
+                    'Karena harga HDD jauh lebih mahal',
+                    'Karena SSD NVMe memiliki kecepatan baca/tulis yang jauh lebih tinggi',
+                    'Karena SSD tidak membutuhkan aliran listrik',
+                    'Karena HDD hanya bisa dipakai di laptop'
+                ],
+                correct: 1,
+                explanation: 'Benar! SSD berbasis flash memory memiliki kecepatan transfer data yang jauh melampaui piringan mekanis HDD.'
+            },
+            {
+                question: 'Apa fungsi utama dari Motherboard di dalam rakitan PC?',
+                options: [
+                    'Menghubungkan seluruh komponen hardware agar dapat saling berkomunikasi',
+                    'Menurunkan suhu sistem secara drastis',
+                    'Menjadi satu-satunya media penyimpanan data file',
+                    'Meningkatkan kapasitas baterai'
+                ],
+                correct: 0,
+                explanation: 'Benar! Motherboard adalah papan sirkuit pusat yang menghubungkan CPU, RAM, GPU, dan storage.'
+            },
+            {
+                question: 'Komponen apakah yang berfungsi mengubah arus listrik AC dari stopkontak menjadi arus DC yang stabil untuk PC?',
+                options: ['Cooling Fan', 'Power Supply Unit (PSU)', 'VRAM', 'Heatsink'],
+                correct: 1,
+                explanation: 'Tepat! PSU adalah jantung kelistrikan yang menyuplai daya aman ke seluruh komponen komputer.'
+            },
+            {
+                question: 'Satuan apa yang biasanya digunakan untuk mengukur kecepatan clock speed pada sebuah CPU?',
+                options: ['Byte', 'GHz (Gigahertz)', 'Watt', 'RPM'],
+                correct: 1,
+                explanation: 'Benar! Kecepatan clock CPU diukur dalam satuan GHz yang menunjukkan jumlah siklus per detik.'
+            },
+            {
+                question: 'Apa akibat utama jika sistem pendingin (cooling) CPU gagal atau tidak berfungsi dengan baik?',
+                options: [
+                    'Komputer mendadak jadi sangat dingin',
+                    'Terjadi overheat dan thermal throttling yang menurunkan performa atau mematikan PC',
+                    'Kapasitas RAM bertambah otomatis',
+                    'Koneksi internet menjadi lebih cepat'
+                ],
+                correct: 1,
+                explanation: 'Benar! Overheat tanpa pendingin yang layak dapat menyebabkan kerusakan permanen atau PC mati otomatis.'
+            },
+            {
+                question: 'Manakah di bawah ini yang merupakan jenis memori bersifat volatil (data hilang saat PC dimatikan)?',
+                options: ['Hard Disk Drive (HDD)', 'Flashdisk USB', 'RAM (Random Access Memory)', 'SSD SATA'],
+                correct: 2,
+                explanation: 'Tepat! RAM bersifat volatile, artinya membutuhkan daya listrik untuk terus menyimpan data sementara.'
+            },
+            {
+                question: 'Apa fungsi utama dari Casing PC selain mempercantik tampilan setup?',
+                options: [
+                    'Melindungi komponen internal dari debu dan benturan serta mengatur sirkulasi udara',
+                    'Mempercepat proses rendering video 4K',
+                    'Menggantikan fungsi Power Supply',
+                    'Menambah jumlah core processor'
+                ],
+                correct: 0,
+                explanation: 'Benar! Casing melindungi fisik komponen sekaligus menyediakan jalur aliran udara (airflow) yang baik.'
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let selectedOptionIndex = null;
+
+        // Inisialisasi Tampilan Kartu di Beranda
+        function renderComponents(data) {
+            const container = document.getElementById('gridContainer');
+            const emptyState = document.getElementById('emptyState');
+            const countLabel = document.getElementById('componentCount');
+            
+            container.innerHTML = '';
+            countLabel.innerText = `${data.length} Komponen`;
+
+            if (data.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            data.forEach((comp, index) => {
+                const card = document.createElement('div');
+                card.className = `group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 rounded-2xl p-6 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10 flex flex-col justify-between`;
+                card.style.animationDelay = `${index * 50}ms`;
+                card.onclick = () => showDetail(comp.id);
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition duration-300">
+                                <i class="fa-solid ${comp.icon} text-lg"></i>
+                            </div>
+                            <span class="text-[10px] font-semibold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2.5 py-1 rounded-full border border-slate-200 dark:border-slate-700">${comp.category}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition">${comp.name}</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">${comp.function}</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-xs font-medium text-indigo-600 dark:text-indigo-400 group-hover:text-indigo-700 dark:group-hover:text-indigo-300">
+                        <span>Pelajari Detail</span>
+                        <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition"></i>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Tampilkan Detail Komponen dengan Gambar Fisik Nyata & Tombol Lightbox
+        let currentOpenComponent = null;
+
+        function showDetail(id) {
+            const comp = componentsData.find(c => c.id === id);
+            if (!comp) return;
+            currentOpenComponent = comp;
+
+            document.getElementById('detailTitle').innerText = comp.name;
+            document.getElementById('detailBadge').innerText = comp.badge;
+            document.getElementById('detailFunction').innerText = comp.function;
+            document.getElementById('detailDescription').innerText = comp.description;
+            document.getElementById('detailTips').innerText = comp.tips;
+            document.getElementById('detailTrouble').innerText = comp.troubleshooting;
+            
+            // Set gambar fisik nyata
+            const physicalImg = document.getElementById('detailPhysicalImage');
+            physicalImg.src = comp.image;
+            physicalImg.onerror = function() {
+                this.src = 'https://placehold.co/600x400/1e293b/818cf8?text=PC+Pedia';
+            };
+
+            const specsList = document.getElementById('detailSpecs');
+            specsList.innerHTML = '';
+            comp.specs.forEach(spec => {
+                const li = document.createElement('li');
+                li.className = 'flex items-center gap-2 bg-slate-50 dark:bg-slate-900/80 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800';
+                li.innerHTML = `<i class="fa-solid fa-check text-indigo-600 dark:text-indigo-400 text-xs"></i> <span>${spec}</span>`;
+                specsList.appendChild(li);
+            });
+
+            document.getElementById('hero').classList.add('hidden');
+            document.getElementById('komponen').classList.add('hidden');
+            document.getElementById('simulator').classList.add('hidden');
+            document.getElementById('kuis').classList.add('hidden');
+
+            const detailSec = document.getElementById('detailSection');
+            detailSec.classList.remove('hidden');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            setTimeout(() => {
+                detailSec.classList.remove('opacity-0', 'translate-y-4');
+                detailSec.classList.add('opacity-100', 'translate-y-0');
+            }, 50);
+        }
+
+        // Fungsi Lightbox Zoom
+        function openLightbox() {
+            if (!currentOpenComponent) return;
+            const modal = document.getElementById('lightboxModal');
+            const img = document.getElementById('lightboxImage');
+            const caption = document.getElementById('lightboxCaption');
+
+            img.src = currentOpenComponent.image;
+            caption.innerText = currentOpenComponent.name;
+            modal.classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightboxModal').classList.add('hidden');
+        }
+
+        // Kembali ke Tampilan Beranda
+        function resetView() {
+            const detailSec = document.getElementById('detailSection');
+            detailSec.classList.add('opacity-0', 'translate-y-4');
+            detailSec.classList.remove('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                detailSec.classList.add('hidden');
+                document.getElementById('hero').classList.remove('hidden');
+                document.getElementById('komponen').classList.remove('hidden');
+                document.getElementById('simulator').classList.remove('hidden');
+                document.getElementById('kuis').classList.remove('hidden');
+                document.getElementById('searchInput').value = '';
+                document.getElementById('searchInputMobile').value = '';
+                renderComponents(componentsData);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 300);
+        }
+
+        // Toggle Dark / Light Mode
+        function toggleDarkMode() {
+            const htmlTag = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (htmlTag.classList.contains('dark')) {
+                htmlTag.classList.remove('dark');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            } else {
+                htmlTag.classList.add('dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+        }
+
+        // Simulator Rakit PC Tier Setter
+        function setBuildTier(tierKey) {
+            const tier = buildTiers[tierKey];
+            if (!tier) return;
+
+            document.getElementById('buildBadge').innerText = tier.badge;
+            document.getElementById('buildTitle').innerText = tier.title;
+            document.getElementById('buildDesc').innerText = tier.desc;
+            document.getElementById('buildPrice').innerText = tier.price;
+
+            // Highlight active button
+            ['entry', 'mid', 'highend'].forEach(k => {
+                const btn = document.getElementById(`btnTier${k.charAt(0).toUpperCase() + k.slice(1)}`);
+                if (k === tierKey) {
+                    btn.className = 'px-5 py-2.5 rounded-xl text-xs font-semibold transition border border-indigo-600 bg-indigo-600 text-white shadow-md shadow-indigo-500/20';
+                } else {
+                    btn.className = 'px-5 py-2.5 rounded-xl text-xs font-semibold transition border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:border-indigo-500';
+                }
+            });
+
+            // Render parts grid
+            const grid = document.getElementById('buildComponentsGrid');
+            grid.innerHTML = '';
+            tier.parts.forEach(part => {
+                const div = document.createElement('div');
+                div.className = 'bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-800';
+                div.innerHTML = `
+                    <span class="block text-[11px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide mb-1">${part.name}</span>
+                    <p class="text-xs text-slate-700 dark:text-slate-200 font-medium">${part.desc}</p>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        // Inisialisasi Kuis
+        function initQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            selectedOptionIndex = null;
+            document.getElementById('quizContainer').classList.remove('hidden');
+            document.getElementById('quizResultBox').classList.add('hidden');
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            const q = quizData[currentQuizIndex];
+            document.getElementById('quizProgress').innerText = `Pertanyaan ${currentQuizIndex + 1} dari ${quizData.length}`;
+            document.getElementById('quizScoreTracker').innerText = `Skor: ${quizScore}`;
+            document.getElementById('quizQuestion').innerText = q.question;
+            
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = '';
+            selectedOptionIndex = null;
+            document.getElementById('quizFeedback').classList.add('hidden');
+            document.getElementById('quizNextBtn').classList.add('hidden');
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left px-4 py-3 bg-slate-50 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-medium rounded-xl border border-slate-200 dark:border-slate-700 transition flex items-center justify-between';
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-slate-400"></i>`;
+                btn.onclick = () => selectQuizOption(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectQuizOption(idx, btnElement) {
+            if (selectedOptionIndex !== null) return;
+            selectedOptionIndex = idx;
+
+            const q = quizData[currentQuizIndex];
+            const options = document.getElementById('quizOptions').children;
+            
+            for (let i = 0; i < options.length; i++) {
+                options[i].disabled = true;
+                if (i === q.correct) {
+                    options[i].className = 'w-full text-left px-4 py-3 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-xs sm:text-sm font-medium rounded-xl border border-emerald-300 dark:border-emerald-800 flex items-center justify-between';
+                    options[i].querySelector('i').className = 'fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400';
+                } else if (i === idx && idx !== q.correct) {
+                    options[i].className = 'w-full text-left px-4 py-3 bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 text-xs sm:text-sm font-medium rounded-xl border border-rose-300 dark:border-rose-800 flex items-center justify-between';
+                    options[i].querySelector('i').className = 'fa-solid fa-circle-xmark text-rose-600 dark:text-rose-400';
+                }
+            }
+
+            const feedback = document.getElementById('quizFeedback');
+            feedback.classList.remove('hidden');
+            
+            if (idx === q.correct) {
+                quizScore += 10;
+                feedback.className = 'p-4 rounded-xl mb-6 text-xs sm:text-sm font-medium bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900';
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check mr-2"></i> ${q.explanation}`;
+            } else {
+                feedback.className = 'p-4 rounded-xl mb-6 text-xs sm:text-sm font-medium bg-rose-50 dark:bg-rose-950/50 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-900';
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark mr-2"></i> Kurang tepat. ${q.explanation}`;
+            }
+
+            document.getElementById('quizScoreTracker').innerText = `Skor: ${quizScore}`;
+            document.getElementById('quizNextBtn').classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizData.length) {
+                loadQuizQuestion();
+            } else {
+                document.getElementById('quizContainer').classList.add('hidden');
+                document.getElementById('quizResultBox').classList.remove('hidden');
+                document.getElementById('quizFinalScoreText').innerText = `Anda berhasil menyelesaikan kuis dengan skor ${quizScore} dari 100 poin!`;
+            }
+        }
+
+        function restartQuiz() {
+            initQuiz();
+        }
+
+        // Jalankan saat halaman dimuat
+        window.onload = function() {
+            renderComponents(componentsData);
+            setBuildTier('entry');
+            initQuiz();
+        };
+    </script>
+</body>
+</html>
